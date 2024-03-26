@@ -1,0 +1,59 @@
+version: '3.7'
+services:
+  hazelcast-node1:
+    container_name: node1
+    image: 'hazelcast/hazelcast:latest'
+    environment:
+      - 'HZ_NETWORK_PUBLICADDRESS=192.168.0.245:5701'
+      - HZ_CLUSTERNAME=lab2
+      - HAZELCAST_CONFIG=hz.xml
+    volumes:
+      - ./hz.xml:/opt/hazelcast/hz.xml
+    ports:
+      - "5701:5701"
+    networks:
+      - labs
+
+  hazelcast-node2:
+    container_name: node2
+    image: 'hazelcast/hazelcast:latest'
+    environment:
+      - 'HZ_NETWORK_PUBLICADDRESS=192.168.0.245:5702'
+      - HZ_CLUSTERNAME=lab2
+      - HAZELCAST_CONFIG=hz.xml
+      #- 'JAVA_OPTS=-Dhazelcast.config=/opt/hazelcast/config_ext/hazelcast.xml'
+    volumes:
+      - ./hz.xml:/opt/hazelcast/hz.xml
+    ports:
+      - "5702:5701"
+    networks:
+      - labs
+
+  hazelcast-node3:
+    container_name: node3
+    image: 'hazelcast/hazelcast:latest'
+    environment:
+      - 'HZ_NETWORK_PUBLICADDRESS=192.168.0.245:5703'
+      - HZ_CLUSTERNAME=lab2
+      - HAZELCAST_CONFIG=hz.xml
+      #- 'JAVA_OPTS=-Dhazelcast.config=/opt/hazelcast/config_ext/hazelcast.xml'
+    volumes:
+      - ./hz.xml:/opt/hazelcast/hz.xml
+    ports:
+      - "5703:5701"
+    networks:
+      - labs
+
+  management-center:
+    container_name: mgmt
+    image: hazelcast/management-center:latest
+    environment:
+      - MC_HTTP_PORT=8080
+    ports:
+      - "8080:8080"
+    networks:
+      - labs
+
+networks:
+  labs:
+    driver: bridge
